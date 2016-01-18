@@ -94,7 +94,7 @@ def depthFirstSearch(problem):
     while not dfsStack.isEmpty():
         currentPos, pathToNode = dfsStack.pop()
 
-        for nextState, action, cost in problem.getSuccessors(currentPos):
+        for nextState, action, _ in problem.getSuccessors(currentPos):
             if nextState in visitedStates:
                 continue
 
@@ -109,8 +109,25 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    bfsQueue = util.Queue()
+    bfsQueue.push((problem.getStartState(), []))
+
+    visitedStates = []
+    while not bfsQueue.isEmpty():
+        currentPos, pathToNode = bfsQueue.pop()
+
+        for nextState, action, _ in problem.getSuccessors(currentPos):
+            if nextState in visitedStates:
+                continue
+
+            if problem.isGoalState(nextState):
+                return pathToNode + [action]
+
+            bfsQueue.push((nextState, pathToNode + [action]))
+            visitedStates.append(currentPos)
+
+    return None
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
